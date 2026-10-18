@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f7f2">
+  <title>向内看 | 自我觉察小测</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f4f7f2;
+      --surface: #ffffff;
+      --ink: #17352e;
+      --muted: #71817a;
+      --line: #dce5dd;
+      --green: #176d59;
+      --green-dark: #105443;
+      --mint: #dcefe5;
+      --coral: #e16c55;
+      --yellow: #f0c96b;
+      --shadow: 0 20px 60px rgb(32 67 53 / 8%);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background-color: var(--paper);
+      background-image: radial-gradient(#cad8cd 0.7px, transparent 0.7px);
+      background-size: 18px 18px;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    }
+
+    button { font: inherit; }
+
+    .page-shell {
+      width: min(1080px, calc(100% - 48px));
+      min-height: 100vh;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      height: 84px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgb(23 53 46 / 12%);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--ink);
+      font-family: Georgia, "Songti SC", serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border: 1.5px solid var(--green);
+      border-radius: 50%;
+      color: var(--green);
+      font-size: 15px;
+    }
+
+    .top-note {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(260px, 0.83fr) minmax(0, 1.17fr);
+      align-items: center;
+      gap: clamp(36px, 8vw, 100px);
+      padding: 54px 0 64px;
+    }
+
+    .intro { padding: 12px 0; }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 22px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .eyebrow::before {
+      width: 25px;
+      height: 2px;
+      content: "";
+      background: var(--coral);
+    }
+
+    h1 {
+      max-width: 420px;
+      margin: 0;
+      font-family: Georgia, "Songti SC", "Noto Serif CJK SC", serif;
+      font-size: clamp(38px, 5vw, 58px);
+      font-weight: 600;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    h1 span {
+      display: block;
+      color: var(--green);
+    }
+
+    .intro-copy {
+      max-width: 350px;
+      margin: 22px 0 30px;
+      color: #5e7168;
+      font-size: 15px;
+      line-height: 1.9;
+    }
+
+    .dimension-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .dimension-list li {
+      padding: 8px 12px;
+      border: 1px solid #d5e1d7;
+      border-radius: 3px;
+      color: #52675d;
+      background: rgb(255 255 255 / 62%);
+      font-size: 12px;
+    }
+
+    .quiz-panel {
+      position: relative;
+      min-height: 490px;
+      padding: clamp(24px, 4vw, 42px);
+      overflow: hidden;
+      border: 1px solid rgb(23 53 46 / 8%);
+      border-radius: 6px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .quiz-panel::after {
+      position: absolute;
+      top: -47px;
+      right: -40px;
+      width: 125px;
+      height: 125px;
+      border: 1px solid rgb(23 109 89 / 12%);
+      border-radius: 50%;
+      box-shadow: 0 0 0 12px rgb(23 109 89 / 3%), 0 0 0 25px rgb(23 109 89 / 2%);
+      content: "";
+      pointer-events: none;
+    }
+
+    .quiz-content { position: relative; z-index: 1; }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .progress-count {
+      color: var(--ink);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .progress-track {
+      height: 4px;
+      overflow: hidden;
+      border-radius: 5px;
+      background: #e8eee8;
+    }
+
+    .progress-fill {
+      width: 12.5%;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--green);
+      transition: width 240ms ease;
+    }
+
+    .question-meta {
+      margin: 34px 0 11px;
+      color: var(--coral);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .question-title {
+      min-height: 68px;
+      margin: 0 0 23px;
+      font-family: Georgia, "Songti SC", "Noto Serif CJK SC", serif;
+      font-size: clamp(21px, 2.6vw, 26px);
+      font-weight: 600;
+      line-height: 1.55;
+      letter-spacing: 0;
+    }
+
+    .choices {
+      display: grid;
+      gap: 9px;
+    }
+
+    .choice {
+      width: 100%;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      color: #40564c;
+      background: #fff;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+    }
+
+    .choice:hover { border-color: #8eb4a0; transform: translateX(2px); }
+
+    .choice:focus-visible, .nav-button:focus-visible, .restart-button:focus-visible {
+      outline: 3px solid rgb(225 108 85 / 40%);
+      outline-offset: 2px;
+    }
+
+    .choice-marker {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 18px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #bac9be;
+      border-radius: 50%;
+      color: transparent;
+      font-size: 11px;
+    }
+
+    .choice[aria-pressed="true"] {
+      border-color: var(--green);
+      color: var(--green-dark);
+      background: #f0f7f2;
+    }
+
+    .choice[aria-pressed="true"] .choice-marker {
+      border-color: var(--green);
+      color: white;
+      background: var(--green);
+    }
+
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .nav-button, .restart-button {
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      color: #52675d;
+      background: #fff;
+      cursor: pointer;
+      transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+    }
+
+    .nav-button:hover:not(:disabled), .restart-button:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .nav-button:disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+    }
+
+    .nav-button.primary, .restart-button {
+      border-color: var(--green);
+      color: white;
+      background: var(--green);
+    }
+
+    .nav-button.primary:hover:not(:disabled), .restart-button:hover {
+      border-color: var(--green-dark);
+      color: white;
+      background: var(--green-dark);
+    }
+
+    .disclaimer {
+      margin: 17px 0 0;
+      color: #89968e;
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .result-view[hidden], .quiz-view[hidden] { display: none; }
+
+    .result-header {
+      display: grid;
+      grid-template-columns: 128px 1fr;
+      align-items: center;
+      gap: 24px;
+      margin: 4px 0 26px;
+    }
+
+    .score-ring {
+      width: 128px;
+      aspect-ratio: 1;
+      display: grid;
+      place-content: center;
+      border-radius: 50%;
+      background: conic-gradient(var(--green) var(--score-angle, 0%), #e8eee8 0);
+      text-align: center;
+    }
+
+    .score-inner {
+      width: 104px;
+      aspect-ratio: 1;
+      display: grid;
+      place-content: center;
+      border-radius: 50%;
+      background: white;
+    }
+
+    .score-value {
+      font-family: Georgia, "Songti SC", serif;
+      font-size: 34px;
+      line-height: 1;
+    }
+
+    .score-label {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .result-kicker {
+      margin: 0 0 8px;
+      color: var(--coral);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .result-title {
+      margin: 0;
+      font-family: Georgia, "Songti SC", "Noto Serif CJK SC", serif;
+      font-size: 23px;
+      line-height: 1.45;
+    }
+
+    .result-summary {
+      margin: 8px 0 0;
+      color: #65776d;
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    .analysis-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 14px;
+      font-size: 14px;
+    }
+
+    .analysis-title::after {
+      height: 1px;
+      flex: 1;
+      content: "";
+      background: var(--line);
+    }
+
+    .analysis-list { display: grid; gap: 12px; }
+
+    .analysis-item {
+      padding: 12px 13px;
+      border-left: 2px solid var(--mint);
+      background: #f7faf7;
+    }
+
+    .analysis-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .analysis-score { color: var(--green); font-variant-numeric: tabular-nums; }
+
+    .analysis-bar {
+      height: 3px;
+      margin: 8px 0;
+      overflow: hidden;
+      background: #e3ebe4;
+    }
+
+    .analysis-bar span {
+      height: 100%;
+      display: block;
+      background: var(--green);
+    }
+
+    .analysis-copy {
+      margin: 0;
+      color: #687a70;
+      font-size: 11px;
+      line-height: 1.65;
+    }
+
+    .result-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .result-footer .disclaimer { margin: 0; }
+
+    .restart-button { flex: 0 0 auto; }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 0 24px;
+      border-top: 1px solid rgb(23 53 46 / 12%);
+      color: #829087;
+      font-size: 11px;
+    }
+
+    @media (max-width: 760px) {
+      .page-shell { width: min(100% - 32px, 540px); }
+      .topbar { height: 68px; }
+      main {
+        grid-template-columns: 1fr;
+        gap: 26px;
+        padding: 36px 0 44px;
+      }
+      .intro { padding: 0; }
+      .eyebrow { margin-bottom: 13px; }
+      h1 { max-width: none; font-size: 38px; }
+      h1 span { display: inline; margin-left: 8px; }
+      .intro-copy { margin: 13px 0 17px; font-size: 14px; }
+      .quiz-panel { min-height: 0; padding: 25px 22px; }
+      .question-meta { margin-top: 28px; }
+      .question-title { min-height: 0; }
+      .result-header { grid-template-columns: 100px 1fr; gap: 17px; }
+      .score-ring { width: 100px; }
+      .score-inner { width: 82px; }
+      .score-value { font-size: 29px; }
+      .result-title { font-size: 20px; }
+      .result-footer { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (max-width: 390px) {
+      .top-note { font-size: 11px; }
+      .quiz-panel { padding: 22px 17px; }
+      .result-header { grid-template-columns: 84px 1fr; gap: 13px; }
+      .score-ring { width: 84px; }
+      .score-inner { width: 70px; }
+      .score-value { font-size: 25px; }
+      footer { flex-direction: column; gap: 5px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="向内看首页">
+        <span class="brand-mark" aria-hidden="true">内</span>
+        <span>向内看</span>
+      </a>
+      <span class="top-note">留一点时间，听听自己的答案</span>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">SELF-AWARENESS / 01</p>
+        <h1 id="page-title">认识自己，<span>从此刻开始。</span></h1>
+        <p class="intro-copy">用几道轻量的问题，看看你如何觉察情绪、表达需要，以及从经历中成长。没有标准答案，按真实的自己来选就好。</p>
+        <ul class="dimension-list" aria-label="测评维度">
+          <li>情绪识别</li>
+          <li>边界表达</li>
+          <li>复盘成长</li>
+          <li>约 2 分钟</li>
+        </ul>
+      </section>
+
+      <section class="quiz-panel" aria-label="自我觉察测试">
+        <div class="quiz-content quiz-view" id="quiz-view">
+          <div class="progress-row">
+            <span>自我觉察小测</span>
+            <span class="progress-count" id="progress-count">01 <span aria-hidden="true">/</span> 08</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-label="答题进度" aria-valuemin="1" aria-valuemax="8" aria-valuenow="1" id="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <p class="question-meta" id="question-meta">情绪识别 · 01</p>
+          <h2 class="question-title" id="question-title" tabindex="-1"></h2>
+          <div class="choices" id="choices" role="group" aria-label="选择最符合你的情况">
+            <button class="choice" type="button" data-value="0" aria-pressed="false"><span class="choice-marker" aria-hidden="true">✓</span><span>几乎从不</span></button>
+            <button class="choice" type="button" data-value="1" aria-pressed="false"><span class="choice-marker" aria-hidden="true">✓</span><span>偶尔如此</span></button>
+            <button class="choice" type="button" data-value="2" aria-pressed="false"><span class="choice-marker" aria-hidden="true">✓</span><span>经常如此</span></button>
+            <button class="choice" type="button" data-value="3" aria-pressed="false"><span class="choice-marker" aria-hidden="true">✓</span><span>几乎总是</span></button>
+          </div>
+          <div class="nav-row">
+            <button class="nav-button" id="prev-button" type="button" disabled>上一步</button>
+            <button class="nav-button primary" id="next-button" type="button" disabled>继续</button>
+          </div>
+          <p class="disclaimer">这是一份帮助自我观察的轻量问卷，不构成心理诊断或专业建议。</p>
+        </div>
+
+        <div class="quiz-content result-view" id="result-view" hidden aria-live="polite">
+          <p class="eyebrow">YOUR REFLECTION / 结果</p>
+          <div class="result-header">
+            <div class="score-ring" id="score-ring" aria-label="自我觉察得分">
+              <div class="score-inner">
+                <strong class="score-value" id="score-value">0</strong>
+                <span class="score-label">总分 / 24</span>
+              </div>
+            </div>
+            <div>
+              <p class="result-kicker" id="result-kicker">你的觉察画像</p>
+              <h2 class="result-title" id="result-title"></h2>
+              <p class="result-summary" id="result-summary"></p>
+            </div>
+          </div>
+          <h3 class="analysis-title">分维度观察</h3>
+          <div class="analysis-list" id="analysis-list"></div>
+          <div class="result-footer">
+            <p class="disclaimer">结果仅供自我观察，每次状态不同，答案也可能不同。</p>
+            <button class="restart-button" id="restart-button" type="button">重新测试</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>向内看 · 给自我理解一点空间</span>
+      <span>轻量自我观察，不替代专业帮助</span>
+    </footer>
+  </div>
+
+  <script>
+    const questions = [
+      { dimension: "情绪识别", text: "情绪出现时，我通常能说清自己正在感受什么。" },
+      { dimension: "情绪识别", text: "遇到不舒服的事，我会留意它对自己的影响，而不是立刻忽略。" },
+      { dimension: "情绪识别", text: "我能分辨自己的疲惫、焦虑或烦躁分别从哪里来。" },
+      { dimension: "边界表达", text: "当一件事超出自己的精力时，我能坦诚地表达做不到。" },
+      { dimension: "边界表达", text: "我会在答应别人之前，先确认这是否符合自己的意愿。" },
+      { dimension: "边界表达", text: "意见不同时，我能表达自己的想法，也愿意听对方怎么想。" },
+      { dimension: "复盘成长", text: "经历挫折后，我会试着找出能带走的经验，而不只责怪自己。" },
+      { dimension: "复盘成长", text: "我会定期回头看看，最近哪些选择让我更接近想要的生活。" }
+    ];
+    const answerLabels = ["几乎从不", "偶尔如此", "经常如此", "几乎总是"];
+    const dimensions = ["情绪识别", "边界表达", "复盘成长"];
+    const interpretations = {
+      "情绪识别": ["可以从给感受命名开始：每天停下来问问自己‘我现在感觉如何？’", "你已经开始留意内在信号，持续观察会让这些感受更清晰。", "你对自己的情绪信号较敏锐，也能更早发现当下需要。"],
+      "边界表达": ["可以先从小事练习表达偏好，清楚说出需要并不等于拒绝关系。", "你正在练习照顾自己的需要，也兼顾与他人的沟通。", "你通常能觉察个人界限，并以相对坦诚的方式表达出来。"],
+      "复盘成长": ["给自己一次不带评判的回顾：发生了什么、我学到了什么、下次想试什么？", "你会从经历中寻找线索，慢慢把反思转化为行动。", "你善于从经历中提炼经验，并用它支持下一步选择。"]
+    };
+    const answers = Array(questions.length).fill(null);
+    let currentIndex = 0;
+
+    const questionMeta = document.getElementById("question-meta");
+    const questionTitle = document.getElementById("question-title");
+    const progressCount = document.getElementById("progress-count");
+    const progressTrack = document.getElementById("progress-track");
+    const progressFill = document.getElementById("progress-fill");
+    const choiceButtons = [...document.querySelectorAll(".choice")];
+    const prevButton = document.getElementById("prev-button");
+    const nextButton = document.getElementById("next-button");
+    const quizView = document.getElementById("quiz-view");
+    const resultView = document.getElementById("result-view");
+
+    function renderQuestion() {
+      const question = questions[currentIndex];
+      const number = String(currentIndex + 1).padStart(2, "0");
+      questionMeta.textContent = `${question.dimension} · ${number}`;
+      questionTitle.textContent = question.text;
+      progressCount.innerHTML = `${number} <span aria-hidden="true">/</span> 08`;
+      progressFill.style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
+      progressTrack.setAttribute("aria-valuenow", String(currentIndex + 1));
+      choiceButtons.forEach((button, index) => {
+        button.setAttribute("aria-pressed", String(answers[currentIndex] === index));
+      });
+      prevButton.disabled = currentIndex === 0;
+      nextButton.disabled = answers[currentIndex] === null;
+      nextButton.textContent = currentIndex === questions.length - 1 ? "查看结果" : "继续";
+    }
+
+    function getBand(average) {
+      if (average < 1) return 0;
+      if (average < 2) return 1;
+      return 2;
+    }
+
+    function showResults() {
+      const total = answers.reduce((sum, value) => sum + value, 0);
+      const percentage = Math.round((total / (questions.length * 3)) * 100);
+      const title = total <= 10 ? "正在练习听见自己" : total <= 17 ? "觉察力稳步生长" : "拥有清晰的自我感知";
+      const summary = total <= 10
+        ? "有些感受和需要也许还不容易被看见。给自己一点耐心，从一个小小的觉察开始。"
+        : total <= 17
+          ? "你已经在一些时刻注意到自己的感受与选择。继续保持好奇，觉察会慢慢变得更稳定。"
+          : "你对自己的状态有不错的观察，也愿意从经历中获得线索。记得觉察不是要求自己时时完美。";
+      document.getElementById("score-value").textContent = String(total);
+      document.getElementById("score-ring").style.setProperty("--score-angle", `${percentage}%`);
+      document.getElementById("result-kicker").textContent = `${percentage}% · 自我觉察指数`;
+      document.getElementById("result-title").textContent = title;
+      document.getElementById("result-summary").textContent = summary;
+
+      const analysisList = document.getElementById("analysis-list");
+      analysisList.replaceChildren();
+      dimensions.forEach((dimension) => {
+        const indices = questions.reduce((matches, question, index) => {
+          if (question.dimension === dimension) matches.push(index);
+          return matches;
+        }, []);
+        const score = indices.reduce((sum, index) => sum + answers[index], 0);
+        const maximum = indices.length * 3;
+        const average = score / indices.length;
+        const item = document.createElement("section");
+        item.className = "analysis-item";
+        const top = document.createElement("div");
+        top.className = "analysis-top";
+        const name = document.createElement("span");
+        name.textContent = dimension;
+        const scoreLabel = document.createElement("span");
+        scoreLabel.className = "analysis-score";
+        scoreLabel.textContent = `${score} / ${maximum}`;
+        top.append(name, scoreLabel);
+        const bar = document.createElement("div");
+        bar.className = "analysis-bar";
+        bar.setAttribute("role", "progressbar");
+        bar.setAttribute("aria-label", `${dimension}得分`);
+        bar.setAttribute("aria-valuemin", "0");
+        bar.setAttribute("aria-valuemax", String(maximum));
+        bar.setAttribute("aria-valuenow", String(score));
+        const fill = document.createElement("span");
+        fill.style.width = `${(score / maximum) * 100}%`;
+        bar.append(fill);
+        const copy = document.createElement("p");
+        copy.className = "analysis-copy";
+        copy.textContent = interpretations[dimension][getBand(average)];
+        item.append(top, bar, copy);
+        analysisList.append(item);
+      });
+
+      quizView.hidden = true;
+      resultView.hidden = false;
+      document.getElementById("restart-button").focus();
+    }
+
+    choiceButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        answers[currentIndex] = Number(button.dataset.value);
+        renderQuestion();
+        nextButton.focus();
+      });
+    });
+
+    prevButton.addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex -= 1;
+        renderQuestion();
+        questionTitle.focus();
+      }
+    });
+
+    nextButton.addEventListener("click", () => {
+      if (answers[currentIndex] === null) return;
+      if (currentIndex === questions.length - 1) {
+        showResults();
+      } else {
+        currentIndex += 1;
+        renderQuestion();
+        questionTitle.focus();
+      }
+    });
+
+    document.getElementById("restart-button").addEventListener("click", () => {
+      answers.fill(null);
+      currentIndex = 0;
+      resultView.hidden = true;
+      quizView.hidden = false;
+      renderQuestion();
+      questionTitle.focus();
+    });
+
+    renderQuestion();
+  </script>
+</body>
+</html>
